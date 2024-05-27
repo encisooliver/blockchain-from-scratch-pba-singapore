@@ -40,7 +40,56 @@ impl StateMachine for ClothesMachine {
     type Transition = ClothesAction;
 
     fn next_state(starting_state: &ClothesState, t: &ClothesAction) -> ClothesState {
-        todo!("Exercise 3")
+        // todo!("Exercise 3")
+        match t {
+            ClothesAction::Wear => {
+                match starting_state {
+                    ClothesState::Clean(x) | ClothesState::Dirty(x) | ClothesState::Wet(x) =>  {
+                        let life = x - 1;
+                        if life == 0 {return ClothesState::Tattered;}
+                        return ClothesState::Dirty(life);
+                     }
+                    ClothesState::Tattered =>  {
+                        return ClothesState::Tattered;
+                     }
+                }
+            },
+            ClothesAction::Wash => {
+                match starting_state {
+                    ClothesState::Clean(x) | ClothesState::Dirty(x) | ClothesState::Wet(x) =>  {
+                        let life = x - 1;
+                        if life == 0 {return ClothesState::Tattered;}
+                        return ClothesState::Wet(life);
+                     }
+                    ClothesState::Tattered =>  {
+                        return ClothesState::Tattered;
+                     }
+                }
+            }
+            ClothesAction::Dry => {
+                match starting_state {
+                    ClothesState::Clean(x) =>  {
+                        let life = x - 1;
+                        if life == 0 {return ClothesState::Tattered;}
+                        return ClothesState::Clean(life);
+                     }
+                     ClothesState::Dirty(x) =>  {
+                        let life = x - 1;
+                        if life == 0 {return ClothesState::Tattered;}
+                        return ClothesState::Dirty(life);
+                     }
+                     ClothesState::Wet(x) => {
+                        let life = x - 1;
+                        if life == 0 {return ClothesState::Tattered;}
+                        return ClothesState::Clean(life);
+                     }
+                    ClothesState::Tattered =>  {
+                        return ClothesState::Tattered;
+                     }
+                }
+            }
+           
+        }
     }
 }
 
